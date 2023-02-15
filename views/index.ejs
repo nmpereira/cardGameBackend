@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card game</title>
+</head>
+
+<body>
+
+    <!-- form to submit prompts with username, type, prompts-->
+    <form action="/api/convocards" method="POST">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="type">Type</label>
+        <!-- type is a dropdown with values -->
+        <select name="type" id="type">
+            <option value="coupleCards">Conversation starters for couples</option>
+            <option value="friendCards">Conversation starters for friends</option>
+            <option value="Other">Other</option>
+
+        </select>
+        <label for="prompts">Prompts</label>
+        <input type="text" name="prompt" id="prompt">
+        <input type="submit" value="Submit">
+    </form>
+
+
+
+
+</body>
+
+</html>
