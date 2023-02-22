@@ -1,0 +1,31 @@
+<div id="card-deck-container">
+    <!-- Page title -->
+    <div class="flex flex-col items-center justify-center">
+        <h1 class="text-6xl font-bold text-center">Conversation cards</h1>
+        <div class="my-5">
+
+            <%- include('deckPicker') %>
+        </div>
+        <p class="text-2xl font-bold text-center">Play with your partner</p>
+    </div>
+
+
+    <!-- divider -->
+    <div class="divider"></div>
+
+    <!-- render card using daisyUi -->
+    <div class="flex justify-center">
+
+        <!-- import card -->
+
+
+        <%- include('card') %>
+
+
+    </div>
+    <div class="divider"></div>
+    <div class="flex justify-center">
+        <button class="btn btn-primary" id="resetCards">Reset deck</button>
+    </div>
+
+</div>

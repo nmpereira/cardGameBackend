@@ -1,0 +1,38 @@
+<head>
+    <link rel="stylesheet" href="cardInputForm.css">
+</head>
+<div id="card-input-container">
+
+    <form action="/api" method="POST" id="card-input-form">
+
+        <div>
+            <n>
+                Welcome: <input id="username" name="username" value=<%- userData.email %> type="hidden">
+
+
+                </input>
+                <%- userData.email %>
+                    </label>
+        </div>
+        <div class="divider"></div>
+        <div class="form-control">
+
+            <label class="input-group">
+                <span>Deck</span>
+                <select name="type" id="type" class="select w-full max-w-xs">
+                    <option value="Cards for Couples">Conversation starters for couples</option>
+                    <option value="Cards for Friends">Conversation starters for friends</option>
+                    <option value="Other">Other</option>
+
+                </select>
+            </label>
+        </div>
+        <div class="divider"></div>
+        <label for="prompt" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Card content</label>
+        <textarea id="prompt" rows="4" name="prompt"
+            class="textarea-lg block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Write the contents of the card..."></textarea>
+        <div class="divider"></div>
+        <input type="submit" value="Submit" id="cardSubmit" class="btn btn-primary">
+    </form>
+</div>

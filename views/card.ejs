@@ -1,0 +1,44 @@
+<div class="card w-96 bg-neutral text-neutral-content" id="card-body">
+    <div class="card-body items-center text-center">
+        <div class="convoCard flex justify-center flex-col" id="convoCard">
+            <h3 class="card-title justify-center" id="card-title"></h3>
+
+            <p id="card-description" class="justify-center"></p>
+        </div>
+        <div id="cardId" hidden></div>
+
+
+        <div class="divider"></div>
+        <div class="card-actions  space-x-5">
+            <div class="tooltip  tooltip-success" data-tip="Dislike the prompt">
+
+                <div class="indicator">
+                    <span class="indicator-item badge badge-secondary" id="dislikeCounter">0</span>
+                    <div class="grid  bg-base-300 place-items-center"><button class="btn btn-square">
+                            <img src="./images/dislike.png" alt="dislike" id="dislikeCard" class="dislikeCard"
+                                width="30px">
+                        </button></div>
+                </div>
+
+            </div>
+            <div class="tooltip  tooltip-success" data-tip="Skip this prompt">
+
+                <button class="btn btn-accent" id="skipCard">Skip</button>
+            </div>
+            <div class="tooltip  tooltip-success" data-tip="Next prompt">
+
+                <button class="btn btn-primary" id="nextCard">Next</button>
+            </div>
+            <div class="tooltip  tooltip-success" data-tip="Like the prompt">
+                <div class="indicator">
+                    <span class="indicator-item badge badge-secondary" id="likeCounter">0</span>
+                    <div class="grid  bg-base-300 place-items-center"><button class="btn btn-square">
+                            <img src="./images/like.png" alt="like" id="likeCard" class="likeCard" width="30px">
+
+                        </button></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

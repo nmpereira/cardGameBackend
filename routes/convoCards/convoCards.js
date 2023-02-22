@@ -3,125 +3,134 @@
 const express = require("express");
 const router = express.Router();
 const ConvoCard = require("../../models/convoCards/convoCards");
-
-router.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to convoCards" });
-});
-
-// get list of all card types from db
-const cardTypes = () => {
-  return new Promise((resolve, reject) => {
-    ConvoCard.distinct("type", (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-};
-
-router.get("/types", async (req, res) => {
-  try {
-    const types = await cardTypes();
-    res.status(200).json(types);
-  } catch (err) {
-    res.status(500).json({ message: "Error getting card types", err });
-  }
-});
-
-router.get("/all", async (req, res) => {
-  // get all cards
-  ConvoCard.find({}, (err, result) => {
-    if (err) {
-      res.status(500).json({ message: "Error getting all cards", err });
-    } else {
-      res.status(200).json(result);
-    }
-  });
-});
-
-router.get("/random", (req, res) => {
-  // get single random card that is excluded from excludedCards array. Excluded cards are passed in as a body parameter in the form of an comma separated string
-  const { excludedCards, type } = req.query;
-
-  //   convert excludedCards string to array of numbers
-  const excludedCardIds = excludedCards
-    ? excludedCards.split(",").map((cardId) => parseInt(cardId))
-    : [];
-
-  if (!type) {
-    res.status(400).json({ message: "Type is required" });
-  }
-
-  console.log(excludedCardIds, type);
-
-  ConvoCard.aggregate(
-    [
-      { $match: { cardId: { $nin: excludedCardIds }, type } },
-      { $sample: { size: 1 } },
-    ],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({ message: "Error getting random card", err });
-      } else {
-        if (result.length > 0) {
-          res.status(200).json({ message: result[0], excludedCardIds });
-        } else {
-          res.status(200).json({ message: "No cards left", excludedCardIds });
-        }
-      }
-    }
-  );
-});
+const Usercard = require("../../models/userCards/userCards");
 
 // get last cardId
 const getLastCardId = async () => {
-  // get last cardId but if there are no cards, return 0
-  const lastCard = await ConvoCard.findOne({}).sort({ cardId: -1 }).exec();
-  return lastCard ? lastCard.cardId : 0;
+  try {
+    // get last cardId but if there are no cards, return 0
+    const lastCard = await ConvoCard.findOne({}).sort({ cardId: -1 }).exec();
+    return lastCard ? lastCard.cardId : 0;
+  } catch (error) {
+    console.log("error", error);
+  }
 };
 
 router.post("/", (req, res) => {
-  // create new card with a incremented cardId
-  const { prompt, username, type } = req.body;
+  try {
+    // create new card with a incremented cardId
+    const { prompt, username, type } = req.body;
+    console.log("req.body", req.body);
 
-  if (!prompt || !username || !type) {
-    res
-      .status(400)
-      .json({ message: "Prompt, username, and type are required" });
-  }
+    if (!prompt || !username || !type) {
+      res
+        .status(400)
+        .json({ message: "Prompt, username, and type are required" });
+    }
 
-  getLastCardId().then((lastCardId) => {
-    const newCard = new ConvoCard({
-      prompt,
-      cardId: lastCardId + 1,
-      username,
-      type,
-    });
+    getLastCardId().then((lastCardId) => {
+      const newCard = new ConvoCard({
+        prompt,
+        cardId: lastCardId + 1,
+        username,
+        type,
+        likeCounter: 0,
+        dislikeCounter: 0,
+      });
 
-    newCard.save((err, result) => {
-      if (err) {
-        // if duplicate key error, return a different error message
-        if (err.code === 11000) {
-          res.status(500).json({
-            message: "Card already exists",
-            err,
-          });
+      newCard.save((err, result) => {
+        if (err) {
+          // if duplicate key error, return a different error message
+          if (err.code === 11000) {
+            res.status(500).json({
+              message: "Card already exists",
+              err,
+            });
+          } else {
+            console.log("err", err);
+            res.status(500).json({
+              message: "Error creating card",
+              err,
+            });
+          }
         } else {
-          console.log(err);
-          res.status(500).json({
-            message: "Error creating card",
-            err,
-          });
+          res.status(200).redirect("/");
         }
-      } else {
-        res.status(200).redirect("/");
-      }
+      });
     });
-  });
+  } catch (error) {
+    console.log("error", error);
+  }
 });
+
+router.put("/rate", async (req, res) => {
+  // rate card. Rating can be likeCounter or dislikeCounter and is incremented by 1 for each rating
+  try {
+    const { cardId, rating, user } = req.body;
+    console.log("req.body", req.body);
+
+    if (!cardId || !rating) {
+      res.status(400).json({ message: "CardId and rating are required" });
+    }
+
+    const ratingResponse = await updateUserCardRating({
+      cardId,
+      email: user.email,
+      rating,
+    });
+
+    if (!ratingResponse.success) {
+      return res
+        .status(400)
+        .json({ ratingResponse: ratingResponse, response: null });
+    }
+
+    const response = ratingResponse.success
+      ? await ConvoCard.findOneAndUpdate(
+          { cardId },
+          { $inc: { [rating]: 1 } },
+          { new: true }
+        )
+      : null;
+
+    console.log("response", response, rating, ratingResponse);
+
+    res.status(200).json({ response, ratingResponse });
+  } catch (err) {
+    res.status(500).json({ message: "Error rating card", err });
+  }
+});
+
+// when a user likes or dislikes a card, the UserCard model is updated
+async function updateUserCardRating({ cardId, email, rating }) {
+  try {
+    console.log("updateUserCardRating", cardId, email, rating);
+    const query = { email, cardId };
+
+    const cardRating = await Usercard.findOne(query);
+
+    //  check if cardId has already been rated by user. If it has been rated, return an error that the card has already been rated. If the card has not been rated, update the card rating
+    console.log("cardRating", cardRating);
+    if (cardRating?.rated) {
+      return { message: "You have already rated the card", success: false };
+    }
+
+    const updateRating = Usercard({
+      email,
+      cardId,
+      rated: true,
+      liked: rating === "likeCounter" ? true : false,
+      disliked: rating === "dislikeCounter" ? true : false,
+    });
+
+    const response = await updateRating.save();
+
+    console.log("response", response);
+    return { response, success: true };
+  } catch (error) {
+    console.log("error", error);
+  }
+}
 
 // export router
 module.exports = router;

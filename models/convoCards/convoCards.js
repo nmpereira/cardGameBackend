@@ -27,6 +27,18 @@ const convoCardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  likeCounter: {
+    type: Number,
+    default: 0,
+  },
+  dislikeCounter: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("ConvoCard", convoCardSchema);

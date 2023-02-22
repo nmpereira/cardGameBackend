@@ -15,31 +15,23 @@
 
 <body>
     <%- include('topNav') %>
+        <div id="card-input-container">
 
 
-        <div id="card-deck-container">
-
-            <%- include('cardDeck') %>
-
-                <div class="relative top-16">
-                    <div>
-
-
-
-                        <%- include('alert') %>
-                    </div>
-
-                </div>
+            <%- include('cardInputForm') %>
         </div>
 
         <script>
-            const userData = `<%- JSON.stringify(userData) %>`;
+
+            const userData = '<%- JSON.stringify(userData) %>'
+
         </script>
+        <script src="cardInputForm.js"></script>
 
-        <script src="alert.js"></script>
-        <script src="card.js"></script>
-        <script src="index.js"></script>
+
+
+
+
 </body>
-
 
 </html>
