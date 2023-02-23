@@ -29,18 +29,16 @@ function getCardsFromLocalStorage({ key, game }) {
   return cardList;
 }
 
-function resetCards({ key, game }) {
+async function resetCards({ key, game }) {
   if (!key || !game) {
     throw new Error("Key and game is required to reset local storage");
   }
   const storageKey = `${key}-${game.split(" ").join("-")}`;
   window.localStorage.removeItem(storageKey);
 
-  //   reload the page
-  window.location.reload();
-
   showAlert({
-    message: "Cards have been reset. You can now start rating cards again.",
+    message:
+      "Cards have been reset. You can now start viewing all cards again.",
     duration: 3,
   });
 }

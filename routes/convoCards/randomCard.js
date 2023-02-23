@@ -6,16 +6,11 @@ router.get("/", (req, res) => {
   try {
     const { excludedCards, type } = req.query;
 
-    //   convert excludedCards string to array of numbers
-
-    console.log("excludedCards", req.query);
-    console.log("excludedCardstype", typeof excludedCards, excludedCards);
     const excludedCardIds = excludedCards
       ?.split(",")
       .map((id) => (id ? parseInt(id) : null))
       .filter((id) => id !== null)
       .filter((value, index, array) => array.indexOf(value) === index);
-    console.log("excludedCardIds", typeof excludedCardIds, excludedCardIds);
 
     if (!type) {
       res.status(400).json({ message: "Type is required" });
@@ -27,7 +22,7 @@ router.get("/", (req, res) => {
           $match: {
             cardId: { $nin: excludedCardIds },
             type,
-            // verified: true
+            verified: true,
           },
         },
         { $sample: { size: 1 } },
