@@ -16,7 +16,24 @@ const getLastCardId = async () => {
   }
 };
 
-router.get("/usercards/:email", async (req, res) => {});
+async function getCardsByUser({ email }) {
+  const cards = await ConvoCard.find({
+    username: email,
+  }).lean();
+  return { cards };
+}
+
+router.get("/usercards/:email", async (req, res) => {
+  try {
+    // get all usercards for a user
+    const { email } = req.params;
+    const { cards } = await getCardsByUser({ email });
+
+    res.status(200).json({ message: cards, count: cards.length });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
 
 router.post("/", (req, res) => {
   try {
@@ -61,7 +78,7 @@ router.post("/", (req, res) => {
       });
     });
   } catch (error) {
-    console.log("error", error);
+    throw new Error(error);
   }
 });
 
@@ -130,7 +147,7 @@ async function updateUserCardRating({ cardId, email, rating }) {
     console.log("response", response);
     return { response, success: true };
   } catch (error) {
-    console.log("error", error);
+    throw new Error(error);
   }
 }
 
