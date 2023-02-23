@@ -7,7 +7,7 @@ const dbUri = process.env.MONGODB_URI;
 const User = require("./models/users/users");
 const { addUserToDb } = require("./routes/user/user");
 const morgan = require("morgan");
-
+app.set("trust proxy", true);
 app.use(morgan("dev"));
 
 app.use(require("./routes/admin/admin"));
