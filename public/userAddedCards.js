@@ -48,6 +48,12 @@ async function addCardsToTable() {
     cell3.innerText = cards.message[i].type;
     cell4.innerText = cards.message[i].verified ? "Yes" : "No";
     cell5.innerText = cards.message[i].prompt;
+    cell5.classList.add(
+      "overflow-ellipsis",
+      "overflow-hidden",
+      "max-w-xs",
+      "whitespace-normal"
+    );
 
     //  append the cells to the row
     row.appendChild(cell1);
