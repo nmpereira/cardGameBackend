@@ -1,6 +1,6 @@
 (async () =>
   getCard({
-    skipped: false,
+    skipped: true,
     type: document.getElementById("card-type").value,
   }))();
 
@@ -38,7 +38,12 @@ document.getElementById("dislikeCard").addEventListener("click", () =>
   })
 );
 
-document.getElementById("resetCards").addEventListener("click", resetCards);
+document.getElementById("resetCards").addEventListener("click", () =>
+  resetCards({
+    key: "cardList",
+    game: document.getElementById("card-type").value,
+  })
+);
 
 async function renderCard({ card, skipped }) {
   const { prompt, type, cardId, likeCounter, dislikeCounter } = card;
@@ -57,6 +62,7 @@ async function renderCard({ card, skipped }) {
 
   if (!skipped) {
     console.log("updated without skipping", cardId);
+    addCardToLocalStorage({ key: "cardList", value: cardId, game: type });
   } else {
     console.log("skipped", cardId);
   }
@@ -76,18 +82,19 @@ async function getCard({ skipped, type = null }) {
       "Pick a card deck".toUpperCase());
   }
 
+  const excludedCards = getCardsFromLocalStorage({
+    key: "cardList",
+    game: type,
+  });
+
   const res = await axios.get(
-    `/random${!true ? "" : `?excludedCards=${`1,2,3`}`}`,
+    `/random${!true ? "" : `?excludedCards=${excludedCards}`}`,
     {
       params: { type },
     }
   );
 
-  renderCard({ card: res.data.message, skipped });
-}
-
-async function resetCards() {
-  console.log("resetting cards");
+  renderCard({ card: res.data.message, skipped, type });
 }
 
 async function rateCard({ cardId, rating, user }) {
@@ -114,7 +121,18 @@ async function rateCard({ cardId, rating, user }) {
       }
     });
 
-  console.log(res);
+  if (res.data.ratingResponse.success) {
+    showAlert({
+      message:
+        rating === "likeCounter"
+          ? "You liked the card!"
+          : rating === "dislikeCounter"
+          ? "You disliked the card!"
+          : "Error",
+      duration: 3,
+    });
+  }
+
   document.getElementById("likeCounter").innerText =
     res.data.response.likeCounter;
   document.getElementById("dislikeCounter").innerText =

@@ -16,6 +16,8 @@ const getLastCardId = async () => {
   }
 };
 
+router.get("/usercards/:email", async (req, res) => {});
+
 router.post("/", (req, res) => {
   try {
     // create new card with a incremented cardId

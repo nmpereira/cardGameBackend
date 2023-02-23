@@ -31,10 +31,10 @@ const { auth } = require("express-openid-connect");
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: "a long, randomly-generated string stored in env",
-  baseURL: "http://localhost:3000",
-  clientID: "oVjtFSudUMlxc5tuA0hKGEo4MiVmYYwW",
-  issuerBaseURL: "https://cardgamedev.us.auth0.com",
+  secret: process.env.AUTH_secret,
+  baseURL: process.env.AUTH_baseURL,
+  clientID: process.env.AUTH_clientID,
+  issuerBaseURL: process.env.AUTH_issuerBaseURL,
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
@@ -88,7 +88,13 @@ mongoose.connect(
         `Connected to database: ${mongoose.connection.host}:${mongoose.connection.name}`
       );
       app.listen(port, () =>
-        console.log(`Server is running on http://localhost:${port}`)
+        console.log(
+          `Server is running on ${
+            process.env.NODE_ENV === "production"
+              ? `port: ${port}`
+              : `http://localhost:${port}`
+          }`
+        )
       );
     }
   }

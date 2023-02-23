@@ -9,29 +9,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="index.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="preload.js"></script>
+
     <title>Card game</title>
 </head>
 
 <body>
     <%- include('topNav') %>
-        <div id="card-input-container">
+        <div class="flex flex-col items-center justify-center relative top-16" id="card-input-page">
 
 
-            <%- include('cardInputForm') %>
+
+            <div class="relative bottom-6">
+
+                <%- include('cardInputForm') %>
+            </div>
+
+            <%- include('userAddedCards') %>
+
         </div>
 
+
+
         <script>
-
             const userData = '<%- JSON.stringify(userData) %>'
-
         </script>
         <script src="cardInputForm.js"></script>
-
-
-
-
-
+        <script src="userAddedCards.js"></script>
+        <script src="deckPicker.js"></script>
 </body>
 
 </html>

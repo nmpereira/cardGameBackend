@@ -10,4 +10,8 @@ body{
     opacity: 0;
 }
 
+#card-input-page{
+    max-height: 600px;
+   
+}
 
