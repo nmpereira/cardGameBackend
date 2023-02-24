@@ -57,7 +57,7 @@ async function renderCard({ card, skipped }) {
 
   if (!card) {
     return (document.getElementById("card-description").innerText =
-      "No more cards");
+      "No more cards \n\n Reset Deck to start over".toUpperCase());
   }
 
   if (!skipped) {

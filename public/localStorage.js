@@ -11,6 +11,7 @@ function addCardToLocalStorage({ key, value, game }) {
   if (!cardList) {
     // add to local storage with key and value
     cardList = [];
+    cardList.push(value);
     window.localStorage.setItem(storageKey, JSON.stringify(cardList));
   } else {
     cardList.push(value);
