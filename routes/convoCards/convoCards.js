@@ -73,7 +73,7 @@ router.post("/", (req, res) => {
             });
           }
         } else {
-          res.status(200).redirect("/");
+          res.status(200).redirect("/addcontent");
         }
       });
     });
