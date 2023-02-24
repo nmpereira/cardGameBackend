@@ -14,4 +14,8 @@ body{
     max-height: 750px;
    
 }
+#hint{
+    max-width: 450px;
+    min-height: 125px;
+}
 

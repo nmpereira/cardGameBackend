@@ -66,6 +66,7 @@ async function renderCard({ card, skipped }) {
   } else {
     console.log("skipped", cardId);
   }
+  addHint();
 
   document.getElementById("card-description").innerText = prompt.toUpperCase();
   document.getElementById("dislikeCounter").innerText = dislikeCounter
