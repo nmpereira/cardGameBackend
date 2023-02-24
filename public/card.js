@@ -51,9 +51,9 @@ async function renderCard({ card, skipped }) {
 
   await animateCardPopup();
 
-  document.getElementById("card-title").innerText = type
-    ? type.toUpperCase()
-    : "";
+  // document.getElementById("card-title").innerText = type
+  //   ? type.toUpperCase()
+  //   : "";
 
   if (!card) {
     return (document.getElementById("card-description").innerText =
