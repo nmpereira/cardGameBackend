@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.50.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="icon" href="/images/cardgame.png">
+    <title>Convo Deck</title>
+</head>
+
+<body>
+    <%- include('topNav') %>
+
+        <div class="flex flex-col items-center justify-center relative top-16" id="thank-feedback">
+
+            <!-- feedback text -->
+
+            <div class="flex flex-col items-center justify-center my-16">
+                <% if (feedback) { %>
+                    <% if (feedback.name) { %>
+                        <p class="text-lg font-bold">
+                            Name: <%= feedback.name %>
+                        </p>
+                        <% } %>
+                            <% if (feedback.email) { %>
+                                <p class="text-lg font-bold">
+                                    Email: <%= feedback.email %>
+                                </p>
+                                <% } %>
+                                    <% if (feedback.feedback) { %>
+                                        <p class="text-lg font-bold">
+                                            Feedback: <%= feedback.feedback %>
+                                        </p>
+                                        <% } %>
+
+                                            <% if (feedback.rating) { %>
+                                                <p class="text-lg font-bold">
+                                                    Rating: <%= feedback.rating %>
+                                                </p>
+                                                <!-- else -->
+
+                                                <% } else { %>
+                                                    <p class="text-lg font-bold">
+                                                        No rating given
+                                                    </p>
+                                                    <% } %>
+
+                                                        <% } %>
+
+
+
+
+            </div>
+
+
+            <div class="flex flex-col items-center justify-center">
+                <h1 class="text-2xl font-bold">Thank you for your feedback!</h1>
+                <p class="text-lg">We will use your feedback to improve the app.</p>
+            </div>
+
+            <div class="flex flex-col items-center justify-center relative top-6">
+
+
+                <a href="/" class="btn btn-primary">Go back to the home page</a>
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+</body>
+
+</html>

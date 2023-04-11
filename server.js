@@ -5,6 +5,7 @@ const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 const dbUri = process.env.MONGODB_URI;
 const User = require("./models/users/users");
+const Feedback = require("./models/feedback/feedback");
 const { addUserToDb } = require("./routes/user/user");
 const morgan = require("morgan");
 app.set("trust proxy", true);
@@ -47,9 +48,15 @@ app.use("/random", randomCard);
 
 app.get("/", addUserToDb, async (req, res) => {
   if (req.oidc.isAuthenticated()) {
-    return res.status(200).render("index", { userData: req.oidc.user });
+    return res.status(200).render("index", {
+      userData: req.oidc.user,
+      isAuthenticated: req.oidc.isAuthenticated(),
+    });
   }
-  return res.status(200).render("index", { userData: null });
+  return res.status(200).render("index", {
+    userData: null,
+    isAuthenticated: req.oidc.isAuthenticated(),
+  });
 });
 
 app.get("/addcontent", async (req, res) => {
@@ -64,9 +71,40 @@ app.get("/addcontent", async (req, res) => {
       await newUser.save();
     }
 
-    res.status(200).render("cardInputIndex", { userData: req.oidc.user });
+    res.status(200).render("cardInputIndex", {
+      userData: req.oidc.user,
+      isAuthenticated: req.oidc.isAuthenticated(),
+    });
   } else {
     res.status(200).redirect("/login");
+  }
+});
+
+app.get("/feedback", async (req, res) => {
+  res.status(200).render("feedback", {
+    userData: req.oidc.user,
+    isAuthenticated: req.oidc.isAuthenticated(),
+  });
+});
+
+app.post("/feedback", async (req, res) => {
+  try {
+    const { feedback, rating, email, name } = req.body;
+    // save to db
+    const newFeedback = new Feedback({
+      feedback,
+      rating,
+      email,
+      name,
+    });
+    await newFeedback.save();
+    res.status(200).render("feedbackSubmit", {
+      feedback: newFeedback,
+      userData: req.oidc.user,
+      isAuthenticated: req.oidc.isAuthenticated(),
+    });
+  } catch (error) {
+    throw new Error(error);
   }
 });
 

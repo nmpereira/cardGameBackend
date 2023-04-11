@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.50.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="/images/cardgame.png">
+    <title>Convo Deck</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+    <%- include('topNav') %>
+
+        <div class="flex flex-col items-center justify-center relative top-16" id="feedback-form">
+
+
+            <form action="/feedback" method="POST" id="feedback-form">
+                <!-- Title for 'How did we do?'-->
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white text-center">How did we do?</h1>
+                <div class="divider"></div>
+
+                <label for="name"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center">Name*</label>
+                <input type="text" name="name" id="name" required
+                    class="block p-2.5 w-96 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                    placeholder="Your name*">
+                <div class="divider"></div>
+                <label for="email"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center">Email*</label>
+                <input type="email" name="email" id="email" required
+                    class="block p-2.5 w-96 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                    placeholder="Your email*">
+                <div class="divider"></div>
+
+
+
+                <label for="feedback"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center">Feedback*</label>
+                <textarea id="feedback" rows="4" name="feedback" required
+                    class="textarea-lg block p-2.5 w-96 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                    placeholder="Suggestions? Complaints? Thoughts?*"></textarea>
+                <div class="divider"></div>
+
+                <label for="rating"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-center">Rating*</label>
+
+
+                <!-- rating dropdown -->
+
+                <select name="rating" id="rating" required
+                    class="block p-2.5 w-96 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ">
+                    <option value="0">Rate us!</option>
+                    <option value="1">1 star</option>
+                    <option value="2">2 stars</option>
+                    <option value="3">3 stars</option>
+                    <option value="4">4 stars</option>
+                    <option value="5">5 stars</option>
+                </select>
+
+
+                <div class="divider"></div>
+
+
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center py-2">* required</p>
+
+                <div class="flex justify-center">
+
+                    <input type="submit" value="Submit" id="feedbackSubmit" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+
+
+
+</body>
+
+</html>

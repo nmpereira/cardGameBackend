@@ -1,13 +1,52 @@
+<script>
+    const userData = `<%- JSON.stringify(userData) %>`;
+    const isAuthenticated = `<%- JSON.stringify(isAuthenticated) %>`;
+</script>
 <div class="fixed top-0">
-    <div class="navbar bg-base-100 space-x-20">
+    <div class="navbar bg-base-100 space-x-16">
         <div class="navbar-start">
 
-            <label class="normal-case text-xl">Card games</label>
+            <a href="/addcontent" class="btn" id="show-card-input-form">Add new cards</a>
         </div>
+        <!-- <div class="navbar-center">
+            
 
+        </div> -->
         <div class="navbar-end">
-            <a href="/addcontent" class="btn" id="show-card-input-form">Add new cards </a>
+            <!-- show user profile image -->
+            <div class="dropdown dropdown-end">
+                <!-- circle profile avatar -->
+                <div tabindex="0" class="m-1 btn dropdown-toggle">
+                    <img src="<%= userData?userData.picture:`/images/cardgame.png` %>" alt="profile image"
+                        class="rounded-full w-10 h-10">
+                </div>
+                <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
+                    <li>
+                        <a href="/feedback" class="btn btn-outline my-2">Feedback</a>
+                    </li>
+
+                    <% if (isAuthenticated) { %>
+
+                        <li>
+                            <a href="/logout" class="btn btn-outline my-2">Logout</a>
+                        </li>
+                        <% } else {%>
+
+                            <li>
+                                <a href="/login" class="btn btn-outline my-2">Login</a>
+                            </li>
+                            <% } %>
+                </ul>
+
+
+
+            </div>
+
+
+
         </div>
     </div>
-</div>
-<script src="topNav.js"></script>
+    <script src="topNav.js">
+
+    </script>
+    <script>console.log('userData', userData)</script>
